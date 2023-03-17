@@ -1,6 +1,7 @@
 package org.java.exercise;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Evento {
     private String titolo;
@@ -60,5 +61,46 @@ public class Evento {
 
     public int getnPostiPrenotati() {
         return nPostiPrenotati;
+    }
+
+    //metodi
+
+    //metodo prenota
+    public void prenota() throws DataPassataException, PostiNegativiException{
+
+        LocalDate today = LocalDate.now();
+
+        if(data.isBefore(today)) {
+            throw new DataPassataException("La data non è valida perché è già passata ");
+        } else if (nPostiTotali < 1) {
+            throw new PostiNegativiException("I posti totali non possono essere negativi ");
+        } else {
+            nPostiPrenotati++;
+        }
+    }
+
+    //metodo disdici
+    public void disdici() throws DataPassataException, PostiNegativiException{
+
+        LocalDate today = LocalDate.now();
+
+        if(data.isBefore(today)) {
+            throw new DataPassataException("La data non è valida perché è già passata ");
+        } else if (nPostiTotali < 0) {
+            throw new PostiNegativiException("I posti totali non possono essere negativi ");
+        } else {
+            nPostiPrenotati--;
+        }
+    }
+
+    //metodo per formattare la data
+    private static String formattaData(LocalDate data) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return data.format(formatter);
+    }
+
+    @Override
+    public String toString() {
+        return this.formattaData(getData()) + "-" + getTitolo();
     }
 }
