@@ -24,7 +24,7 @@ public class Main {
 
         Evento evento1 = new Evento(titolo, data, nPostiTotali);
 
-        System.out.println("Evento " + evento1);
+        System.out.println("Evento  " + evento1);
 
     }
 }

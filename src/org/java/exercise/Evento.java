@@ -38,7 +38,7 @@ public class Evento {
 
     //getter e setter di titolo e data
     public String getTitolo() {
-        return titolo;
+        return  titolo;
     }
 
     public void setTitolo(String titolo) {
