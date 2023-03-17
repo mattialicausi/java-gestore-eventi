@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,14 +18,49 @@ public class Main {
 
         System.out.println();
 
+
         System.out.print("Data evento (formato dd/MM/yyyy): ");
         String dataStr = scan.nextLine();
-        LocalDate data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate data = null;
+        boolean inputCorretto = false;
+
+        while (!inputCorretto) {
+            try {
+                data = LocalDate.parse(dataStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                if (data.compareTo(LocalDate.now()) < 0) {
+                    System.out.println("La data dell'evento non può essere precedente alla data odierna.");
+                    System.out.print("Inserisci una nuova data (formato dd/MM/yyyy): ");
+                    dataStr = scan.nextLine();
+                } else {
+                    inputCorretto = true;
+                }
+            } catch (DateTimeParseException e) {
+                System.out.println("Formato data non valido. Inserisci una data nel formato dd/MM/yyyy.");
+                dataStr = scan.nextLine();
+            }
+        }
+
 
         System.out.println();
 
-        System.out.print("Numero totale di posti ");
-        int nPostiTotali = Integer.parseInt(scan.nextLine());
+        int nPostiTotali;
+
+        do {
+            System.out.print("Numero totale di posti: ");
+            try {
+                nPostiTotali = Integer.parseInt(scan.nextLine());
+                if (nPostiTotali <= 0) {
+                    throw new IllegalArgumentException("Il numero totale di posti deve essere maggiore di zero");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Il valore inserito non è un numero valido");
+                nPostiTotali = -1; // imposta un valore negativo per continuare il ciclo
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+                nPostiTotali = -1; // imposta un valore negativo per continuare il ciclo
+            }
+        } while (nPostiTotali <= 0);
+
 
         Evento evento1 = new Evento(titolo, data, nPostiTotali);
 
