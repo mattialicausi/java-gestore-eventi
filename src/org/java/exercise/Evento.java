@@ -94,7 +94,7 @@ public class Evento {
     }
 
     //metodo per formattare la data
-    private static String formattaData(LocalDate data) {
+    public String formattaData(LocalDate data) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         return data.format(formatter);
     }

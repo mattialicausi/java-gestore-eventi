@@ -1,6 +1,8 @@
 package org.java.exercise;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
@@ -29,8 +31,6 @@ public class Main {
         //chiedo all'utente se vuole effettuare delle prenotazioni
 
 
-
-
         boolean stop = false;
         while (!stop) {
             System.out.print("Vuoi effettuare una prenotazione/disdetta/uscire ? (p/d/u)");
@@ -39,6 +39,9 @@ public class Main {
 
             switch (choice) {
                 case ("p"): {
+
+                    //prenotazioni
+
                     System.out.print("Quante prenotazioni vuoi effettuare? ");
                     int counterPrenotazioni = Integer.parseInt(scan.nextLine());
                     int i = 0;
@@ -56,6 +59,9 @@ public class Main {
                     break;
                 }
                 case("d"): {
+
+                    //disdette
+
                     System.out.print("Quante disdette vuoi effettuare? ");
                     int counterDisdette = Integer.parseInt(scan.nextLine());
                     int i = 0;
@@ -74,6 +80,9 @@ public class Main {
 
                 }
                 case("u"): {
+
+                    //esci
+
                     System.out.print("Arrivederci ");
                     stop = true;
                     break;
@@ -83,5 +92,106 @@ public class Main {
                 }
             }
         }
+
+
+        System.out.println();
+
+
+        //provo la classe concerto
+
+        System.out.print("Titolo concerto ");
+        String titoloConcerto = scan.nextLine();
+
+        System.out.println();
+
+        System.out.print("Data concerto (formato dd/MM/yyyy): ");
+        String dataConcertoStr = scan.nextLine();
+        LocalDate dataConcerto = LocalDate.parse(dataConcertoStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+        System.out.println();
+
+        System.out.print("Numero totale di posti ");
+        int nPostiTotaliConcerto = Integer.parseInt(scan.nextLine());
+
+        System.out.print("Inserisci l'ora");
+        String oraStr = scan.nextLine();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        LocalTime oraConcerto = LocalTime.parse(oraStr, formatter);
+
+
+        System.out.print("Prezzo ");
+        BigDecimal prezzoConcerto = new BigDecimal(scan.nextLine());
+
+       Concerto concerto1 = new Concerto(titoloConcerto, dataConcerto, nPostiTotaliConcerto, oraConcerto, prezzoConcerto);
+
+        System.out.println("Concerto  " + concerto1);
+
+        //chiedo all'utente se vuole effettuare delle prenotazioni
+
+
+
+
+        boolean stopConcerto = false;
+        while (!stopConcerto) {
+            System.out.print("Vuoi effettuare una prenotazione/disdetta/uscire ? (p/d/u)");
+
+            String choice = scan.nextLine();
+
+            switch (choice) {
+                case ("p"): {
+
+                    //prenotazioni
+
+                    System.out.print("Quante prenotazioni vuoi effettuare? ");
+                    int counterPrenotazioniConcerto = Integer.parseInt(scan.nextLine());
+                    int n = 0;
+
+                    if (concerto1.getnPostiTotali() > concerto1.getnPostiPrenotati() + counterPrenotazioniConcerto) {
+                        while (n < counterPrenotazioniConcerto) {
+                            concerto1.prenota();
+                            n++;
+                        }
+                    } else {
+                        System.out.println("Non puoi prenotare " + counterPrenotazioniConcerto + " posti" + ", il massimo è di " + (concerto1.getnPostiTotali() - concerto1.getnPostiPrenotati()));
+                    }
+
+                    System.out.println("Posti prenotati " + concerto1.getnPostiPrenotati() + " / " + concerto1.getnPostiTotali());
+                    break;
+                }
+                case("d"): {
+
+                    //disdette
+
+                    System.out.print("Quante disdette vuoi effettuare? ");
+                    int counterDisdetteConcerto = Integer.parseInt(scan.nextLine());
+                    int n = 0;
+
+                    if (counterDisdetteConcerto <= concerto1.getnPostiPrenotati()) {
+                        while (n < counterDisdetteConcerto) {
+                            concerto1.disdici();
+                            n++;
+                        }
+                    } else {
+                        System.out.println("Non puoi effettuare " + counterDisdetteConcerto + " disdette" + ", il massimo è di " + concerto1.getnPostiPrenotati());
+                    }
+
+                    System.out.println("Posti prenotati " + concerto1.getnPostiPrenotati() + " / " + concerto1.getnPostiTotali());
+                    break;
+
+                }
+                case("u"): {
+
+                    //esci
+
+                    System.out.print("Arrivederci ");
+                    stopConcerto = true;
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        }
+
     }
 }
